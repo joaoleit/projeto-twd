@@ -2,25 +2,30 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define RESET "\x1B[0m"
 
 char mapa[10][10];
-int end = 0, game = 0, restart = 0;
+int end = 0, game = 0, pos1, pos2, vivo = 0;
 
 void menu();
 void gameInit();
 void mapStatus();
-
+void playerPosition();
+void gameStatus();
 
 int main(void){
   gameInit();
   do
   {
-    //if(restart == 1)
     gameInit();
     menu();
     while(game == 1)
     {
-      mapStatus();
+      gameStatus();
     }
   }while(end == 0);
 }
@@ -75,7 +80,12 @@ void gameInit(){
       l = rand() % 10;
     }while(mapa[k][l] != '.');
 
-    if(i == 0) mapa[k][l] = 'R';
+    if(i == 0)
+    {
+      mapa[k][l] = 'R';
+      pos1 = k;
+      pos2 = l;
+    }
     else if(i == 1) mapa[k][l] = 'S';
     else if(i < 6) mapa[k][l] = 'B';
     else mapa[k][l] = 'Z';
@@ -101,10 +111,68 @@ void mapStatus(){
     {
       for(int j = 0; j < 10; j++)
       {
-        printf("%c ", mapa[i][j]);
+        if(mapa[i][j] == 'R') printf(YEL "%c " RESET, mapa[i][j]);
+        else if(mapa[i][j] == 'S') printf(BLU "%c " RESET, mapa[i][j]);
+        else if(mapa[i][j] == 'Z') printf(GRN "%c " RESET, mapa[i][j]);
+        else if(mapa[i][j] == 'B') printf(RED "%c " RESET, mapa[i][j]);
+        else printf("%c ", mapa[i][j]);
       }
       printf("\n");
     }
-    //end = 1;
-    game = 0;
+}
+
+void playerPosition(){
+  char control;
+  printf("Mova Rick: ");
+  scanf("%s", &control);
+  getchar();
+  switch(control)
+  {
+    case 'w':
+      if(mapa[pos1 - 1][pos2] == '.')
+      {
+        mapa[pos1][pos2] = '.';
+        mapa[pos1 - 1][pos2] = 'R';
+        pos1--;
+      }
+      break;
+    case 's':
+      if(mapa[pos1 + 1][pos2] == '.')
+      {
+        mapa[pos1][pos2] = '.';
+        mapa[pos1 + 1][pos2] = 'R';
+        pos1++;
+      }
+      break;
+    case 'a':
+      if(mapa[pos1][pos2 - 1] == '.')
+      {
+        mapa[pos1][pos2] = '.';
+        mapa[pos1][pos2 - 1] = 'R';
+        pos2--;
+      }
+      break;
+    case 'd':
+      if(mapa[pos1][pos2 + 1] == '.')
+      {
+        mapa[pos1][pos2] = '.';
+        mapa[pos1][pos2 + 1] = 'R';
+        pos2++;
+      }
+      break;
+    case 'o':
+      game = 0;
+      break;
+    default:
+      printf("'w', 'a', 's', 'd' Para se mover\n");
+      playerPosition();
+      break;
+  }
+  control = ' ';
+}
+
+void gameStatus(){
+    system("cls");
+    mapStatus();
+    playerPosition();
 }
