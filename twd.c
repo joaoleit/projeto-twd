@@ -234,31 +234,15 @@ void zombiePosition(){
       {
         zombx = pos1 - i;
         zomby = pos2 - j;
-        if(zombx <= zomby)
+        if(zombx <= zomby || zomby == 0)
         {
-          if(zombx == 0)
-          {
-            if(pos2 > j && mapa[i][j + 1] == '.'){mapa[i][j + 1] = 'Z';mapa[i][j] = '.';}
-            if(pos2 < j && mapa[i][j - 1] == '.'){mapa[i][j - 1] = 'Z';mapa[i][j] = '.';}
-          }
-          else
-          {
-            if(pos1 > i && mapa[i + 1][j] == '.'){mapa[i + 1][j] = 'Z';mapa[i][j] = '.';}
-            if(pos1 < i && mapa[i - 1][j] == '.'){mapa[i - 1][j] = 'Z';mapa[i][j] = '.';}
-          }
+          if(pos1 > i && mapa[i + 1][j] == '.'){mapa[i + 1][j] = 'Z';mapa[i][j] = '.';}
+          if(pos1 < i && mapa[i - 1][j] == '.'){mapa[i - 1][j] = 'Z';mapa[i][j] = '.';}
         }
-        else if(zomby < zombx)
+        else if(zomby < zombx || zombx == 0)
         {
-          if(zomby == 0)
-          {
-            if(pos1 > i && mapa[i + 1][j] == '.'){mapa[i + 1][j] = 'Z';mapa[i][j] = '.';}
-            if(pos1 < i && mapa[i - 1][j] == '.'){mapa[i - 1][j] = 'Z';mapa[i][j] = '.';}
-          }
-          else
-          {
-            if(pos2 > j && mapa[i][j + 1] == '.'){mapa[i][j + 1] = 'Z';mapa[i][j] = '.';}
-            if(pos2 < j && mapa[i][j - 1] == '.'){mapa[i][j - 1] = 'Z';mapa[i][j] = '.';}
-          }
+          if(pos2 > j && mapa[i][j + 1] == '.'){mapa[i][j + 1] = 'Z';mapa[i][j] = '.';}
+          if(pos2 < j && mapa[i][j - 1] == '.'){mapa[i][j - 1] = 'Z';mapa[i][j] = '.';}
         }
       }
     }
