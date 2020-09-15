@@ -16,6 +16,7 @@ void gameInit();
 void mapStatus();
 void playerPosition();
 void gameStatus();
+void checkCollision(int posx, int posy);
 
 int main(void){
   gameInit();
@@ -129,36 +130,36 @@ void playerPosition(){
   switch(control)
   {
     case 'w':
-      if(mapa[pos1 - 1][pos2] == '.')
+      if(pos1 == 0)
       {
-        mapa[pos1][pos2] = '.';
-        mapa[pos1 - 1][pos2] = 'R';
-        pos1--;
+        printf("Rick nao pode ir para cima\n");
+        playerPosition();
       }
+      else checkCollision(-1, 0);
       break;
     case 's':
-      if(mapa[pos1 + 1][pos2] == '.')
+      if(pos1 == 9)
       {
-        mapa[pos1][pos2] = '.';
-        mapa[pos1 + 1][pos2] = 'R';
-        pos1++;
+        printf("Rick nao pode ir para baixo\n");
+        playerPosition();
       }
+      else checkCollision(1, 0);
       break;
     case 'a':
-      if(mapa[pos1][pos2 - 1] == '.')
+      if(pos2 == 0)
       {
-        mapa[pos1][pos2] = '.';
-        mapa[pos1][pos2 - 1] = 'R';
-        pos2--;
+        printf("Rick nao pode ir para esquerda");
+        playerPosition();
       }
+      else checkCollision(0, -1);
       break;
     case 'd':
-      if(mapa[pos1][pos2 + 1] == '.')
+      if(pos2 == 9)
       {
-        mapa[pos1][pos2] = '.';
-        mapa[pos1][pos2 + 1] = 'R';
-        pos2++;
+        printf("Rick nao pode ir para direita");
+        playerPosition();
       }
+      else checkCollision(0, 1);
       break;
     case 'o':
       game = 0;
@@ -170,6 +171,17 @@ void playerPosition(){
   }
   control = ' ';
 }
+
+void checkCollision(int posx, int posy){
+  if(mapa[pos1 + (posx)][pos2 + (posy)] == '.')
+  {
+    mapa[pos1][pos2] = '.';
+    mapa[pos1 + (posx)][pos2 + (posy)] = 'R';
+    pos1 += posx;
+    pos2 += posy;
+  }
+}
+
 
 void gameStatus(){
     system("cls");
