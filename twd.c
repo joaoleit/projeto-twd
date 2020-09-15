@@ -234,7 +234,7 @@ void zombiePosition(){
       {
         zombx = pos1 - i;
         zomby = pos2 - j;
-        if(zombx < zomby)
+        if(zombx <= zomby)
         {
           if(zombx == 0)
           {
@@ -247,7 +247,7 @@ void zombiePosition(){
             if(pos1 < i && mapa[i - 1][j] == '.'){mapa[i - 1][j] = 'Z';mapa[i][j] = '.';}
           }
         }
-        else if(zomby < zombx || zombx == 0)
+        else if(zomby < zombx)
         {
           if(zomby == 0)
           {
