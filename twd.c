@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
+#include <conio.h>
 
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
@@ -16,8 +17,8 @@ void menu();
 void gameInit();
 void mapStatus();
 void playerPosition();
-void gameStatus();
 void checkCollision(int posx, int posy);
+void gameStatus();
 
 int main(void){
   gameInit();
@@ -48,8 +49,8 @@ void menu(){
       game = 1;
       break;
     case 2:
-      printf("\nRick acorda atordoado em algum lugar aleatorio no cenario, com uma arma sem balas.\n\nExistem 15 zumbis espalhados pelo cenario e os obstaculos estao por toda parte");
-      printf("Nesse cenario existe uma unica saida, se ela estiver bloqueada rick nao tem saida e morrera. Caso Contrario, se Rick alcancar a saida, o game e encerrado");
+      printf("\nRick(R) acorda atordoado em algum lugar aleatorio no cenario, com uma arma sem balas(B).\n\nExistem 15 zumbis(Z) espalhados pelo cenario e os obstaculos estao por toda parte");
+      printf("Nesse cenario existe uma unica saida(S), se ela estiver bloqueada rick nao tem saida e morrera. Caso Contrario, se Rick alcancar a saida, o game e encerrado");
       printf("\n\nRick se move com as teclas 'w','a','s','d'. Existem 4 balas espalhadas no cenario.\nSe Rick se movimentar e tiver uma bala naquela posicao, Rick carregara a arma imediatamente.");
       printf("Se Rick tentar se mover para uma regiao em que ha um obstaculo, ele permanece onde esta e nao se movimenta.\n\nCaso ele se movimente para uma regiao em que ha um zumbi,existem duas possibilidades:");
       printf("\nSe Rick estiver com a arma descarregada, ele e atacado e morre caso contrario, Rick usa a bala no zumbi.\nOs zumbis que estao proximos de Rick passam a persegui-lo. Os que estao mais distantes, ficam parados.");
@@ -126,14 +127,14 @@ void mapStatus(){
 void playerPosition(){
   char control;
   printf("Mova Rick: ");
-  scanf("%s", &control);
-  getchar();
+  control = getch();
+  printf("\n");
   switch(control)
   {
     case 'w':
       if(pos1 == 0)
       {
-        printf("Rick nao pode ir para cima\n");
+        printf("Rick nao pode ir para cima\n");Sleep(500);
         playerPosition();
       }
       else checkCollision(-1, 0);
@@ -141,7 +142,7 @@ void playerPosition(){
     case 's':
       if(pos1 == 9)
       {
-        printf("Rick nao pode ir para baixo\n");
+        printf("Rick nao pode ir para baixo\n");Sleep(500);
         playerPosition();
       }
       else checkCollision(1, 0);
@@ -149,7 +150,7 @@ void playerPosition(){
     case 'a':
       if(pos2 == 0)
       {
-        printf("Rick nao pode ir para esquerda\n");
+        printf("Rick nao pode ir para esquerda\n");Sleep(500);
         playerPosition();
       }
       else checkCollision(0, -1);
@@ -157,7 +158,7 @@ void playerPosition(){
     case 'd':
       if(pos2 == 9)
       {
-        printf("Rick nao pode ir para direita\n");
+        printf("Rick nao pode ir para direita\n");Sleep(500);
         playerPosition();
       }
       else checkCollision(0, 1);
@@ -166,7 +167,7 @@ void playerPosition(){
       game = 0;
       break;
     default:
-      printf("'w', 'a', 's', 'd' Para se mover\n");
+      printf("'w', 'a', 's', 'd' Para se mover\n");Sleep(500);
       playerPosition();
       break;
   }
@@ -174,14 +175,7 @@ void playerPosition(){
 }
 
 void checkCollision(int posx, int posy){
-  if(mapa[pos1 + posx][pos2 + posy] == '.')
-  {
-    mapa[pos1][pos2] = '.';
-    mapa[pos1 + posx][pos2 + posy] = 'R';
-    pos1 += posx;
-    pos2 += posy;
-  }
-  else if(mapa[pos1 + posx][pos2 + posy] == 'A' || mapa[pos1 + posx][pos2 + posy] == 'P' || mapa[pos1 + posx][pos2 + posy] == 'C')
+  if(mapa[pos1 + posx][pos2 + posy] == 'A' || mapa[pos1 + posx][pos2 + posy] == 'P' || mapa[pos1 + posx][pos2 + posy] == 'C')
   {
     if(mapa[pos1 + posx][pos2 + posy] == 'A') printf("\nHa uma arvore no caminho\n");
     if(mapa[pos1 + posx][pos2 + posy] == 'P') printf("\nHa uma pedra no caminho\n");
@@ -189,19 +183,21 @@ void checkCollision(int posx, int posy){
     Sleep(750);
     printf("Escolha uma nova direcao\n"); Sleep(750);
   }
-  else if(mapa[pos1 + posx][pos2 + posy] == 'B')
+  else if(mapa[pos1 + posx][pos2 + posy] == 'B' || mapa[pos1 + posx][pos2 + posy] == '.')
   {
-    ammo++;
-    printf("\nVoce encontrou uma bala"); Sleep(500);
-    printf("\nE Recarregou sua arma"); Sleep(500);
-    printf("\nBalas: %d", ammo); Sleep(750);
+    if(mapa[pos1 + posx][pos2 + posy] == 'B')
+    {
+      ammo++;
+      printf("\nVoce encontrou uma bala"); Sleep(500);
+      printf("\nE Recarregou sua arma"); Sleep(500);
+      printf("\nBalas: %d", ammo); Sleep(750);
+    }
     mapa[pos1][pos2] = '.';
     mapa[pos1 + posx][pos2 + posy] = 'R';
     pos1 += posx;
     pos2 += posy;
   }
 }
-
 
 void gameStatus(){
     system("cls");
