@@ -51,7 +51,7 @@ void menu(){
     case 2:
       printf("\nRick(R) acorda atordoado em algum lugar aleatorio no cenario, com uma arma sem balas(B).\n\nExistem 15 zumbis(Z) espalhados pelo cenario e os obstaculos estao por toda parte");
       printf("Nesse cenario existe uma unica saida(S), se ela estiver bloqueada rick nao tem saida e morrera. Caso Contrario, se Rick alcancar a saida, o game e encerrado");
-      printf("\n\nRick se move com as teclas 'w','a','s','d', com a tecla 'o' jogo reinicia e volta ao menu. Existem 4 balas espalhadas no cenario.\nSe Rick se movimentar e tiver uma bala naquela posicao, Rick carregara a arma imediatamente.");
+      printf("\n\nRick se move com as teclas 'w','a','s','d', com a tecla 'p' jogo pausa e volta ao menu, apertando o ESC jogo reinicia e volta ao menu.\n\nExistem 4 balas espalhadas no cenario. Se Rick se movimentar e tiver uma bala naquela posicao, Rick carregara a arma imediatamente.");
       printf("Se Rick tentar se mover para uma regiao em que ha um obstaculo, ele permanece onde esta e nao se movimenta.\n\nCaso ele se movimente para uma regiao em que ha um zumbi,existem duas possibilidades:");
       printf("\nSe Rick estiver com a arma descarregada, ele e atacado e morre caso contrario, Rick usa a bala no zumbi.\nOs zumbis que estao proximos de Rick passam a persegui-lo. Os que estao mais distantes, ficam parados.");
       printf("\n\nPressione ENTER para voltar ao menu: ");
@@ -153,11 +153,14 @@ void playerPosition(){
       }
       else checkCollision(0, 1);
       break;
-    case 'o':
+    case 'p':
+      game = 0;
+      break;
+    case 27:
       printf("\nTem certeza que deseja reiniciar o jogo?(s/n): ");
       scanf(" %c", &check);
       getchar();
-      if(check == 's'){game = 0;restart = 1;}
+      if(check == 's') game = 0, restart = 1;
       break;
     default:
       printf("'w', 'a', 's', 'd' Para se mover\n");Sleep(500);
@@ -180,9 +183,9 @@ void checkCollision(int posx, int posy){
     if(mapa[pos1 + posx][pos2 + posy] == 'B')
     {
       ammo++;
-      printf("\nVoce encontrou uma bala"); Sleep(600);
-      printf("\nE recarregou sua arma"); Sleep(600);
-      printf("\nBalas: %d", ammo); Sleep(750);
+      printf("\nVoce encontrou uma bala"); Sleep(650);
+      printf("\nE recarregou sua arma"); Sleep(650);
+      printf("\nBalas: %d", ammo); Sleep(700);
     }
     mapa[pos1][pos2] = '.';
     mapa[pos1 + posx][pos2 + posy] = 'R';
@@ -195,7 +198,7 @@ void checkCollision(int posx, int posy){
     printf("Rick encontrou a saida\n\n");Sleep(650);
     printf("Pressione ENTER para voltar ao MENU: ");
     getchar();
-    restart = 1;game = 0;
+    restart = 1, game = 0;
   }
   else if(mapa[pos1 + posx][pos2 + posy] == 'Z')
   {
@@ -204,7 +207,7 @@ void checkCollision(int posx, int posy){
     {
       ammo--;
       printf("Rick tinha bala e matou ele\n");Sleep(650);
-      printf("Balas: %d", ammo);Sleep(750);
+      printf("Balas: %d", ammo);Sleep(700);
       mapa[pos1][pos2] = '.';
       mapa[pos1 + posx][pos2 + posy] = 'R';
       pos1 += posx;
@@ -216,7 +219,48 @@ void checkCollision(int posx, int posy){
       printf("Rick nao tinha bala e acabou morrendo\n\n");Sleep(650);
       printf("Pressione ENTER para voltar ao menu: ");
       getchar();
-      restart = 1;game = 0;
+      restart = 1, game = 0;
+    }
+  }
+}
+
+void zombiePosition(){
+  int zombx, zomby;
+  for(int i = pos1 - 3; i <= pos1 + 3; i++)
+  {
+    for(int j = pos2 - 3; j <= pos2 + 3; j++)
+    {
+      if(j > -1 && j < 10 && mapa[i][j] == 'Z')
+      {
+        zombx = pos1 - i;
+        zomby = pos2 - j;
+        if(zombx < zomby)
+        {
+          if(zombx == 0)
+          {
+            if(pos2 > j && mapa[i][j + 1] == '.'){mapa[i][j + 1] = 'Z';mapa[i][j] = '.';}
+            if(pos2 < j && mapa[i][j - 1] == '.'){mapa[i][j - 1] = 'Z';mapa[i][j] = '.';}
+          }
+          else
+          {
+            if(pos1 > i && mapa[i + 1][j] == '.'){mapa[i + 1][j] = 'Z';mapa[i][j] = '.';}
+            if(pos1 < i && mapa[i - 1][j] == '.'){mapa[i - 1][j] = 'Z';mapa[i][j] = '.';}
+          }
+        }
+        else if(zomby < zombx || zombx == 0)
+        {
+          if(zomby == 0)
+          {
+            if(pos1 > i && mapa[i + 1][j] == '.'){mapa[i + 1][j] = 'Z';mapa[i][j] = '.';}
+            if(pos1 < i && mapa[i - 1][j] == '.'){mapa[i - 1][j] = 'Z';mapa[i][j] = '.';}
+          }
+          else
+          {
+            if(pos2 > j && mapa[i][j + 1] == '.'){mapa[i][j + 1] = 'Z';mapa[i][j] = '.';}
+            if(pos2 < j && mapa[i][j - 1] == '.'){mapa[i][j - 1] = 'Z';mapa[i][j] = '.';}
+          }
+        }
+      }
     }
   }
 }
@@ -225,4 +269,5 @@ void gameStatus(){
     system("cls");
     mapStatus();
     playerPosition();
+    zombiePosition();
 }
