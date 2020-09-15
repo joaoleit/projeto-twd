@@ -52,14 +52,14 @@ void menu(){
       printf("\nRick(R) acorda atordoado em algum lugar aleatorio no cenario, com uma arma sem balas(B).\n\nExistem 15 zumbis(Z) espalhados pelo cenario e os obstaculos estao por toda parte");
       printf("Nesse cenario existe uma unica saida(S), se ela estiver bloqueada rick nao tem saida e morrera. Caso Contrario, se Rick alcancar a saida, o game e encerrado");
       printf("\n\nRick se move com as teclas 'w','a','s','d', com a tecla 'p' jogo pausa e volta ao menu, apertando o ESC jogo reinicia e volta ao menu.\n\nExistem 4 balas espalhadas no cenario. Se Rick se movimentar e tiver uma bala naquela posicao, Rick carregara a arma imediatamente.");
-      printf("Se Rick tentar se mover para uma regiao em que ha um obstaculo, ele permanece onde esta e nao se movimenta.\n\nCaso ele se movimente para uma regiao em que ha um zumbi,existem duas possibilidades:");
+      printf("Se Rick tentar se mover para uma regiao em que ha um obstaculo, ele permanece onde esta e nao se movimenta.\n\nCaso ele se movimente para uma regiao em que ha um zumbi, existem duas possibilidades:");
       printf("\nSe Rick estiver com a arma descarregada, ele e atacado e morre caso contrario, Rick usa a bala no zumbi.\nOs zumbis que estao proximos de Rick passam a persegui-lo. Os que estao mais distantes, ficam parados.");
       printf("\n\nPressione ENTER para voltar ao menu: ");
       getchar();
       break;
     default:
       end = 1;
-
+      break;
   }
 }
 
