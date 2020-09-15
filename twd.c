@@ -57,7 +57,8 @@ void menu(){
 
 void gameInit(){
   srand(time(NULL));
-  int k, l, contador = 0;
+  int k, l;
+
   for(int i = 0; i < 10; i++)
   {
     for(int j = 0; j < 10; j++)
@@ -66,74 +67,36 @@ void gameInit(){
     }
   }
 
-  for(int i = 0; i < 17; i++)
+  for(int i = 0; i < 21; i++)
   {
-    k = rand() % 10;
-    l = rand() % 10;
+    do
+    {
+      k = rand() % 10;
+      l = rand() % 10;
+    }while(mapa[k][l] != '.');
+
     if(i == 0) mapa[k][l] = 'R';
     else if(i == 1) mapa[k][l] = 'S';
-    else
-    {
-      while(mapa[k][l]!= '.')
-      {
-        k = rand() % 10;
-        l = rand() % 10;
-      }
-      mapa[k][l] = 'Z';
-    }
+    else if(i < 6) mapa[k][l] = 'B';
+    else mapa[k][l] = 'Z';
   }
 
-  while(contador < 19)
+  for(int i = 0; i < 19; i++)
   {
-    k = rand() % 10;
-    l = rand() % 10;
-    if(contador < 4)
+    do
     {
-      if(contador < 2)
-      {
-        while(mapa[k][l] != '.' || mapa[k][l - 1] != '.' || l == 0)
-        {
-          k = rand() % 10;
-          l = rand() % 10;
-        }
-        mapa[k][l] = 'C';
-        mapa[k][l - 1] = 'C';
-      }
-      else
-      {
-        while(mapa[k][l] != '.' || mapa[k - 1][l] != '.' || k == 0)
-        {
-          k = rand() % 10;
-          l = rand() % 10;
-        }
-        mapa[k][l] = 'C';
-        mapa[k - 1][l] = 'C';
-      }
-    }
-    else if(contador < 11)
-    {
-      while(mapa[k][l] != '.')
-      {
-        k = rand() % 10;
-        l = rand() % 10;
-      }
-      mapa[k][l] = 'A';
-    }
-    else
-    {
-      while(mapa[k][l] != '.')
-      {
-        k = rand() % 10;
-        l = rand() % 10;
-      }
-      mapa[k][l] = 'P';
-    }
-    contador++;
+      k = rand() % 10;
+      l = rand() % 10;
+    }while(mapa[k][l] != '.');
+
+    if(i < 4) mapa[k][l] = 'C';
+    else if(i < 11) mapa[k][l] = 'A';
+    else mapa[k][l] = 'P';
   }
 }
 
-
 void mapStatus(){
+    printf("\n");
     for(int i = 0; i < 10; i++)
     {
       for(int j = 0; j < 10; j++)
