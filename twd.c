@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h>
 
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
@@ -9,7 +10,7 @@
 #define RESET "\x1B[0m"
 
 char mapa[10][10];
-int end = 0, game = 0, pos1, pos2, vivo = 0;
+int end = 0, game = 0, pos1, pos2, ammo = 0;
 
 void menu();
 void gameInit();
@@ -148,7 +149,7 @@ void playerPosition(){
     case 'a':
       if(pos2 == 0)
       {
-        printf("Rick nao pode ir para esquerda");
+        printf("Rick nao pode ir para esquerda\n");
         playerPosition();
       }
       else checkCollision(0, -1);
@@ -156,7 +157,7 @@ void playerPosition(){
     case 'd':
       if(pos2 == 9)
       {
-        printf("Rick nao pode ir para direita");
+        printf("Rick nao pode ir para direita\n");
         playerPosition();
       }
       else checkCollision(0, 1);
@@ -173,10 +174,29 @@ void playerPosition(){
 }
 
 void checkCollision(int posx, int posy){
-  if(mapa[pos1 + (posx)][pos2 + (posy)] == '.')
+  if(mapa[pos1 + posx][pos2 + posy] == '.')
   {
     mapa[pos1][pos2] = '.';
-    mapa[pos1 + (posx)][pos2 + (posy)] = 'R';
+    mapa[pos1 + posx][pos2 + posy] = 'R';
+    pos1 += posx;
+    pos2 += posy;
+  }
+  else if(mapa[pos1 + posx][pos2 + posy] == 'A' || mapa[pos1 + posx][pos2 + posy] == 'P' || mapa[pos1 + posx][pos2 + posy] == 'C')
+  {
+    if(mapa[pos1 + posx][pos2 + posy] == 'A') printf("\nHa uma arvore no caminho\n");
+    if(mapa[pos1 + posx][pos2 + posy] == 'P') printf("\nHa uma pedra no caminho\n");
+    if(mapa[pos1 + posx][pos2 + posy] == 'C') printf("\nHa um carro no caminho\n");
+    Sleep(750);
+    printf("Escolha uma nova direcao\n"); Sleep(750);
+  }
+  else if(mapa[pos1 + posx][pos2 + posy] == 'B')
+  {
+    ammo++;
+    printf("\nVoce encontrou uma bala"); Sleep(500);
+    printf("\nE Recarregou sua arma"); Sleep(500);
+    printf("\nBalas: %d", ammo); Sleep(750);
+    mapa[pos1][pos2] = '.';
+    mapa[pos1 + posx][pos2 + posy] = 'R';
     pos1 += posx;
     pos2 += posy;
   }
