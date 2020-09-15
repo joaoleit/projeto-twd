@@ -11,7 +11,7 @@
 #define RESET "\x1B[0m"
 
 char mapa[10][10];
-int end = 0, game = 0, pos1, pos2, ammo = 0;
+int end = 0, game = 0, pos1, pos2, ammo = 0, restart = 1;
 
 void menu();
 void gameInit();
@@ -21,10 +21,9 @@ void checkCollision(int posx, int posy);
 void gameStatus();
 
 int main(void){
-  gameInit();
   do
   {
-    gameInit();
+    if(restart == 1)gameInit();
     menu();
     while(game == 1)
     {
@@ -34,6 +33,7 @@ int main(void){
 }
 
 void menu(){
+  system("cls");
   int opcao;
   printf("\n***MENU***\n");
   printf("1- Jogar\n");
@@ -51,7 +51,7 @@ void menu(){
     case 2:
       printf("\nRick(R) acorda atordoado em algum lugar aleatorio no cenario, com uma arma sem balas(B).\n\nExistem 15 zumbis(Z) espalhados pelo cenario e os obstaculos estao por toda parte");
       printf("Nesse cenario existe uma unica saida(S), se ela estiver bloqueada rick nao tem saida e morrera. Caso Contrario, se Rick alcancar a saida, o game e encerrado");
-      printf("\n\nRick se move com as teclas 'w','a','s','d'. Existem 4 balas espalhadas no cenario.\nSe Rick se movimentar e tiver uma bala naquela posicao, Rick carregara a arma imediatamente.");
+      printf("\n\nRick se move com as teclas 'w','a','s','d', com a tecla 'o' jogo reinicia e volta ao menu. Existem 4 balas espalhadas no cenario.\nSe Rick se movimentar e tiver uma bala naquela posicao, Rick carregara a arma imediatamente.");
       printf("Se Rick tentar se mover para uma regiao em que ha um obstaculo, ele permanece onde esta e nao se movimenta.\n\nCaso ele se movimente para uma regiao em que ha um zumbi,existem duas possibilidades:");
       printf("\nSe Rick estiver com a arma descarregada, ele e atacado e morre caso contrario, Rick usa a bala no zumbi.\nOs zumbis que estao proximos de Rick passam a persegui-lo. Os que estao mais distantes, ficam parados.");
       printf("\n\nPressione ENTER para voltar ao menu: ");
@@ -66,7 +66,7 @@ void menu(){
 void gameInit(){
   srand(time(NULL));
   int k, l;
-
+  ammo = 0, restart = 0;
   for(int i = 0; i < 10; i++)
   {
     for(int j = 0; j < 10; j++)
@@ -75,7 +75,7 @@ void gameInit(){
     }
   }
 
-  for(int i = 0; i < 21; i++)
+  for(int i = 0; i < 40; i++)
   {
     do
     {
@@ -91,19 +91,9 @@ void gameInit(){
     }
     else if(i == 1) mapa[k][l] = 'S';
     else if(i < 6) mapa[k][l] = 'B';
-    else mapa[k][l] = 'Z';
-  }
-
-  for(int i = 0; i < 19; i++)
-  {
-    do
-    {
-      k = rand() % 10;
-      l = rand() % 10;
-    }while(mapa[k][l] != '.');
-
-    if(i < 4) mapa[k][l] = 'C';
-    else if(i < 11) mapa[k][l] = 'A';
+    else if(i < 21) mapa[k][l] = 'Z';
+    else if(i < 25) mapa[k][l] = 'C';
+    else if(i < 32) mapa[k][l] = 'A';
     else mapa[k][l] = 'P';
   }
 }
@@ -125,7 +115,7 @@ void mapStatus(){
 }
 
 void playerPosition(){
-  char control;
+  char control, check;
   printf("Mova Rick: ");
   control = getch();
   printf("\n");
@@ -164,14 +154,16 @@ void playerPosition(){
       else checkCollision(0, 1);
       break;
     case 'o':
-      game = 0;
+      printf("\nTem certeza que deseja reiniciar o jogo?(s/n): ");
+      scanf(" %c", &check);
+      getchar();
+      if(check == 's'){game = 0;restart = 1;}
       break;
     default:
       printf("'w', 'a', 's', 'd' Para se mover\n");Sleep(500);
       playerPosition();
       break;
   }
-  control = ' ';
 }
 
 void checkCollision(int posx, int posy){
@@ -180,8 +172,8 @@ void checkCollision(int posx, int posy){
     if(mapa[pos1 + posx][pos2 + posy] == 'A') printf("\nHa uma arvore no caminho\n");
     if(mapa[pos1 + posx][pos2 + posy] == 'P') printf("\nHa uma pedra no caminho\n");
     if(mapa[pos1 + posx][pos2 + posy] == 'C') printf("\nHa um carro no caminho\n");
-    Sleep(750);
-    printf("Escolha uma nova direcao\n"); Sleep(750);
+    Sleep(650);
+    printf("Escolha uma nova direcao\n"); Sleep(650);
   }
   else if(mapa[pos1 + posx][pos2 + posy] == 'B' || mapa[pos1 + posx][pos2 + posy] == '.')
   {
@@ -189,13 +181,22 @@ void checkCollision(int posx, int posy){
     {
       ammo++;
       printf("\nVoce encontrou uma bala"); Sleep(500);
-      printf("\nE Recarregou sua arma"); Sleep(500);
+      printf("\nE recarregou sua arma"); Sleep(500);
       printf("\nBalas: %d", ammo); Sleep(750);
     }
     mapa[pos1][pos2] = '.';
     mapa[pos1 + posx][pos2 + posy] = 'R';
     pos1 += posx;
     pos2 += posy;
+  }
+  else if(mapa[pos1 + posx][pos2 + posy] == 'S')
+  {
+    printf("\n\nParabens!Voce Ganhou\n");Sleep(500);
+    printf("Rick encontrou a saida\n\n");Sleep(500);
+    printf("Pressione ENTER para voltar ao MENU: ");
+    getchar();
+    restart = 1;
+    game = 0;
   }
 }
 
