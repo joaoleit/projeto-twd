@@ -17,7 +17,7 @@ void menu();
 void gameInit();
 void mapStatus();
 void playerPosition();
-void checkCollision(int posx, int posy);
+void checkCollision(int posy, int posx);
 void gameStatus();
 
 int main(void){
@@ -169,18 +169,18 @@ void playerPosition(){
   }
 }
 
-void checkCollision(int posx, int posy){
-  if(mapa[pos1 + posx][pos2 + posy] == 'A' || mapa[pos1 + posx][pos2 + posy] == 'P' || mapa[pos1 + posx][pos2 + posy] == 'C')
+void checkCollision(int posy, int posx){
+  if(mapa[pos1 + posy][pos2 + posx] == 'A' || mapa[pos1 + posy][pos2 + posx] == 'P' || mapa[pos1 + posy][pos2 + posx] == 'C')
   {
-    if(mapa[pos1 + posx][pos2 + posy] == 'A') printf("\nHa uma arvore no caminho\n");
-    if(mapa[pos1 + posx][pos2 + posy] == 'P') printf("\nHa uma pedra no caminho\n");
-    if(mapa[pos1 + posx][pos2 + posy] == 'C') printf("\nHa um carro no caminho\n");
+    if(mapa[pos1 + posy][pos2 + posx] == 'A') printf("\nHa uma arvore no caminho\n");
+    if(mapa[pos1 + posy][pos2 + posx] == 'P') printf("\nHa uma pedra no caminho\n");
+    if(mapa[pos1 + posy][pos2 + posx] == 'C') printf("\nHa um carro no caminho\n");
     Sleep(650);
     printf("Escolha uma nova direcao\n"); Sleep(650);
   }
-  else if(mapa[pos1 + posx][pos2 + posy] == 'B' || mapa[pos1 + posx][pos2 + posy] == '.')
+  else if(mapa[pos1 + posy][pos2 + posx] == 'B' || mapa[pos1 + posy][pos2 + posx] == '.')
   {
-    if(mapa[pos1 + posx][pos2 + posy] == 'B')
+    if(mapa[pos1 + posy][pos2 + posx] == 'B')
     {
       ammo++;
       printf("\nVoce encontrou uma bala"); Sleep(650);
@@ -188,19 +188,19 @@ void checkCollision(int posx, int posy){
       printf("\nBalas: %d", ammo); Sleep(700);
     }
     mapa[pos1][pos2] = '.';
-    mapa[pos1 + posx][pos2 + posy] = 'R';
-    pos1 += posx;
-    pos2 += posy;
+    mapa[pos1 + posy][pos2 + posx] = 'R';
+    pos1 += posy;
+    pos2 += posx;
   }
-  else if(mapa[pos1 + posx][pos2 + posy] == 'S')
+  else if(mapa[pos1 + posy][pos2 + posx] == 'S')
   {
-    printf("\n\nParabens!Voce Ganhou\n");Sleep(650);
+    printf("\n\nParabens! Voce Ganhou\n");Sleep(650);
     printf("Rick encontrou a saida\n\n");Sleep(650);
     printf("Pressione ENTER para voltar ao MENU: ");
     getchar();
     restart = 1, game = 0;
   }
-  else if(mapa[pos1 + posx][pos2 + posy] == 'Z')
+  else if(mapa[pos1 + posy][pos2 + posx] == 'Z')
   {
     printf("\nRick encontrou um Zumbi\n");Sleep(650);
     if(ammo > 0)
@@ -209,9 +209,9 @@ void checkCollision(int posx, int posy){
       printf("Rick tinha bala e matou ele\n");Sleep(650);
       printf("Balas: %d", ammo);Sleep(700);
       mapa[pos1][pos2] = '.';
-      mapa[pos1 + posx][pos2 + posy] = 'R';
-      pos1 += posx;
-      pos2 += posy;
+      mapa[pos1 + posy][pos2 + posx] = 'R';
+      pos1 += posy;
+      pos2 += posx;
     }
     else
     {
