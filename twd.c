@@ -225,21 +225,21 @@ void checkCollision(int posx, int posy){
 }
 
 void zombiePosition(){
-  int zombx, zomby;
+  int zomby, zombx;
   for(int i = pos1 - 3; i <= pos1 + 3; i++)
   {
     for(int j = pos2 - 3; j <= pos2 + 3; j++)
     {
       if(j > -1 && j < 10 && mapa[i][j] == 'Z')
       {
-        zombx = pos1 - i;
-        zomby = pos2 - j;
-        if(zombx <= zomby || zomby == 0)
+        zomby = pos1 - i;
+        zombx = pos2 - j;
+        if(zomby <= zombx || zombx == 0)
         {
           if(pos1 > i && mapa[i + 1][j] == '.'){mapa[i + 1][j] = 'Z';mapa[i][j] = '.';}
           if(pos1 < i && mapa[i - 1][j] == '.'){mapa[i - 1][j] = 'Z';mapa[i][j] = '.';}
         }
-        else if(zomby < zombx || zombx == 0)
+        else if(zombx < zomby || zomby == 0)
         {
           if(pos2 > j && mapa[i][j + 1] == '.'){mapa[i][j + 1] = 'Z';mapa[i][j] = '.';}
           if(pos2 < j && mapa[i][j - 1] == '.'){mapa[i][j - 1] = 'Z';mapa[i][j] = '.';}
