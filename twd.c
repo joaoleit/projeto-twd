@@ -15,6 +15,7 @@ int end = 0, game = 0, pos1, pos2, ammo = 0, restart = 1;
 
 void menu();
 void gameInit();
+void opening();
 void mapStatus();
 void playerPosition();
 void checkCollision(int posy, int posx);
@@ -23,7 +24,11 @@ void gameStatus();
 int main(void){
   do
   {
-    if(restart == 1)gameInit();
+    if(restart == 1)
+    {
+      gameInit();
+      opening();
+    }
     menu();
     while(game == 1)
     {
@@ -61,6 +66,31 @@ void menu(){
       end = 1;
       break;
   }
+}
+
+void opening(){
+  int cicle = 0;
+  system("cls");
+  printf("   __          THE    _      _  _______ _   _  _____    _____  ______          _____   \n");Sleep(200);
+  printf("   \\ \\        / /\\   | |    | |/ /_   _| \\ | |/ ____|  |  __ \\|  ____|   /\\   |  __ \\  \n");Sleep(200);
+  printf("    \\ \\  /\\  / /  \\  | |    | ' /  | | |  \\| | |  __   | |  | | |__     /  \\  | |  | | \n");Sleep(200);
+  printf("     \\ \\/  \\/ / /\\ \\ | |    |  <   | | | . ` | | |_ |  | |  | |  __|   / /\\ \\ | |  | | \n");Sleep(200);
+  printf("      \\  /\\  / ____ \\| |____| . \\ _| |_| |\\  | |__| |  | |__| | |____ / ____ \\| |__| | \n");Sleep(200);
+  printf("       \\/  \\/_/    \\_\\______|_|\\_\\_____|_| \\_|\\_____|  |_____/|______/_/    \\_\\_____/  \n");Sleep(800);
+  while(cicle < 3)
+  {
+    system("cls");Sleep(280);
+    printf("   __          THE    _      _  _______ _   _  _____    _____  ______          _____   \n");
+    printf("   \\ \\        / /\\   | |    | |/ /_   _| \\ | |/ ____|  |  __ \\|  ____|   /\\   |  __ \\  \n");
+    printf("    \\ \\  /\\  / /  \\  | |    | ' /  | | |  \\| | |  __   | |  | | |__     /  \\  | |  | | \n");
+    printf("     \\ \\/  \\/ / /\\ \\ | |    |  <   | | | . ` | | |_ |  | |  | |  __|   / /\\ \\ | |  | | \n");
+    printf("      \\  /\\  / ____ \\| |____| . \\ _| |_| |\\  | |__| |  | |__| | |____ / ____ \\| |__| | \n");
+    printf("       \\/  \\/_/    \\_\\______|_|\\_\\_____|_| \\_|\\_____|  |_____/|______/_/    \\_\\_____/  \n");Sleep(720);
+    cicle++;
+  }
+
+  printf("\n\nPressione ENTER para comecar: ");
+  getchar();
 }
 
 void gameInit(){
@@ -225,10 +255,10 @@ void checkCollision(int posy, int posx){
 }
 
 void zombiePosition(){
-  int zomby, zombx;
-  for(int i = pos1 - 3; i <= pos1 + 3; i++)
+  int zomby, zombx, distance = 2;
+  for(int i = pos1 - distance; i <= pos1 + distance; i++)
   {
-    for(int j = pos2 - 3; j <= pos2 + 3; j++)
+    for(int j = pos2 - distance; j <= pos2 + distance; j++)
     {
       if(j > -1 && j < 10 && mapa[i][j] == 'Z')
       {
